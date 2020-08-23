@@ -13,3 +13,5 @@
 - Next.js
 - TypeGraphQL
 
+###
+npx tsconfig.json for config file
