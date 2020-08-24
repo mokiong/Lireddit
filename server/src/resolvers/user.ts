@@ -39,28 +39,62 @@ class UserResponse{
 @Resolver()
 export class UserResolver {
    //------QUERIES-----//
-   
+   @Query(() => [User])
+   async users(@Ctx() { em }: MyContext): Promise<User[]> {
+      return await em.find(User, {});
+   }
 
 
    //------MUTATIONS-----//
-   @Mutation(() => User)
+   @Mutation(() => UserResponse)
    async register(
-      @Arg('options') options : UsernamePasswordInput
+      @Arg('options') options : UsernamePasswordInput,
       @Ctx() { em }: MyContext
-   ) {
+   ): Promise<UserResponse> {
+      if(options.username.trim().length <=2){
+         return {
+            errors: [{
+               field: 'username',
+               message: 'length must be greater than 2!'
+            }]
+         }
+      }
+
+      if(options.password.trim().length <=2){
+         return {
+            errors: [{
+               field: 'password',
+               message: 'length must be greater than 2!'
+            }]
+         }
+      }
+
       const hashedPassword = await argon2.hash(options.password);
       const user = em.create(User, { 
          username: options.username,
          password: hashedPassword 
       });
-      await em.persistAndFlush(user);
-      return user;
+      try {
+         await em.persistAndFlush(user);
+      } catch (error) {
+         console.log(`ERROR: ${ error }`);
+         if(error.code === '23505') {
+            console.log('DUPLICATE KEY!!');
+            return {
+               errors: [{
+                  field: 'username',
+                  message: 'username already taken'
+               }]
+            }
+         }
+      }
+      return { user };
    }
 
 
    @Mutation(() => UserResponse)
    async login(
-      @Arg('options') options : UsernamePasswordInput
+      @Arg('options') options : UsernamePasswordInput,
       @Ctx() { em }: MyContext
    ): Promise<UserResponse> {
       const user = await em.findOne(User, { username: options.username })
