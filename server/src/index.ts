@@ -11,8 +11,7 @@ import { UserResolver } from "./resolvers/user";
 import redis from 'redis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
-import { MyContext } from "./types";
-
+// import { MyContext } from "./types";
 
 const main = async () => {
    // Connect to database
@@ -24,7 +23,17 @@ const main = async () => {
 
    const RedisStore = connectRedis(session);
    const redisClient = redis.createClient();
+   const apolloServer = new ApolloServer({
+      schema: await buildSchema({
+         resolvers: [HelloResolver, PostResolver, UserResolver],
+         validate: false
+      }),
+      // CONTEXT - a special object accesible by all reslovers
+      context: ({ req, res }) => ({ em: orm.em, req, res })
+      
+   });
    
+   // Middlewares
    app.use(
       session({
          name: 'qid',
@@ -43,20 +52,10 @@ const main = async () => {
          resave: false,
       })
    );
-
-   const apolloServer = new ApolloServer({
-      schema: await buildSchema({
-         resolvers: [HelloResolver, PostResolver, UserResolver],
-         validate: false
-      }),
-      // CONTEXT - a special object accesible by all reslovers
-      context: ({ req, res }) => ({ em: orm.em, req, res })
-      
-   });
-
    // Creates graphQL endpoint on express
    apolloServer.applyMiddleware({ app });
 
+   
    app.listen(4000, () => {
       console.log(`Server starting at localhost: 4000`)
    });
