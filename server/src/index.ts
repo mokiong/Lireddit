@@ -68,12 +68,6 @@ const main = async () => {
       console.log(`Server starting at localhost: 4000`)
    });
 
-
-   // Run SQL
-   // const post = orm.em.create(Post, {title: 'First post'});
-   // await orm.em.persistAndFlush(post); 
-   // const posts = await orm.em.find(Post, {});
-   // console.log(posts); 
 };
 
 main().catch(err => {
