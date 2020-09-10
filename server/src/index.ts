@@ -11,6 +11,7 @@ import { UserResolver } from "./resolvers/user";
 import redis from 'redis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
+import cors from 'cors';
 // import { MyContext } from "./types";
 
 const main = async () => {
@@ -34,6 +35,10 @@ const main = async () => {
    });
    
    // Middlewares
+   app.use(cors({
+      origin: "http://localhost:3000",
+      credentials: true
+   }))
    app.use(
       session({
          name: 'qid',
@@ -53,7 +58,10 @@ const main = async () => {
       })
    );
    // Creates graphQL endpoint on express
-   apolloServer.applyMiddleware({ app });
+   apolloServer.applyMiddleware({ 
+      app, 
+      cors: { origin: false } 
+   });
 
    
    app.listen(4000, () => {
