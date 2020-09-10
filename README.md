@@ -18,9 +18,10 @@
 - React
 - TypeScript
 - GraphQL
+- URQL/Apollo
 - Node.js
 - PostgreSQL
-- MikroORM/TypeORM
+- MikroORM
 - Redis (version 3.0.503) for windows
 - TypeGraphQL
 
