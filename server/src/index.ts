@@ -1,7 +1,5 @@
 import "reflect-metadata";
-import { MikroORM } from "@mikro-orm/core";
 import { COOKIE_NAME, __prod__ }  from "./constants";
-import microConfig   from "./mikro-orm.config";
 import express       from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
@@ -12,13 +10,23 @@ import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
+import { createConnection } from 'typeorm';
+import { Post } from "./entities/Post";
+import { User } from "./entities/User";
+
 
 
 const main = async () => {
    // Connect to database
-   const orm = await MikroORM.init(microConfig);
-   // Run migration
-   await orm.getMigrator().up();
+   const conn = await createConnection({
+      type: 'postgres',
+      database: 'lireddit2',
+      username: 'postgres',
+      password: "michaelong",
+      logging: true,
+      synchronize: true,
+      entities: [Post, User]
+   });
 
    const app = express();
 
@@ -31,7 +39,7 @@ const main = async () => {
          validate: false
       }),
       // CONTEXT - a special object accesible by all reslovers
-      context: ({ req, res }) => ({ em: orm.em, req, res, redis })
+      context: ({ req, res }) => ({ req, res, redis })
       
    });
    
