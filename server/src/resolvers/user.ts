@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Field, Arg, Ctx, ObjectType } from "type-gra
 import { MyContext } from "../types";
 import { User } from "../entities/User";
 import argon2 from "argon2";
-import { EntityManager } from '@mikro-orm/postgresql';
 import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
 import { validateRegister } from "../utilities/validateRegister";
@@ -167,9 +166,8 @@ export class UserResolver {
          })
          .returning("*")
          .execute();
-         console.log("result:", result)
 
-         user = result.raw;
+         user = result.raw[0];
       } catch (error) {
          console.log(`ERROR: ${ error }`);
          if(error.code === '23505') {
