@@ -1,25 +1,19 @@
-import { Box, Flex, Link, Button } from '@chakra-ui/core';
-import { Formik, Form } from 'formik';
+import { Box, Button } from '@chakra-ui/core';
+import { Form, Formik } from 'formik';
 import { withUrqlClient } from 'next-urql';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react'
+import React from 'react';
 import { InputField } from '../components/inputField';
 import { Layout } from '../components/Layout';
-import { NavBar } from '../components/NavBar';
-import { Wrapper } from '../components/Wrapper';
-import { useCreatePostMutation, useMeQuery } from '../generated/graphql';
+import { useCreatePostMutation } from '../generated/graphql';
 import { createUrqlClient } from '../utilities/createUrqlClient';
+import { useIsAuth } from '../utilities/useIsAuth';
 
 const CreatePost: React.FC<{}> = ({}) => {
    const router = useRouter();
-   const [{data, fetching}] = useMeQuery();
+   useIsAuth();
+   
    const [, createPost] = useCreatePostMutation();
-
-   useEffect(() => {
-      if(!fetching && !data?.me){
-         router.replace("/login");
-      }
-   }, [data, router]);
 
    return (
          <Layout variant="small">
