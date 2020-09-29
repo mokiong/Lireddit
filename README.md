@@ -8,7 +8,7 @@
 - URQL/Apollo
 - Node.js
 - PostgreSQL
-- MikroORM/TypeORM
+- TypeORM
 - Redis (version 3.0.503) for windows
 - Next.js
 - TypeGraphQL
@@ -21,9 +21,14 @@
 - URQL/Apollo
 - Node.js
 - PostgreSQL
-- MikroORM
+- TypeORM
 - Redis (version 3.0.503) for windows
 - TypeGraphQL
+- Next.js
+
+### Other tools used
+- Mackaroo -- dummy data generator
+- ts-node  -- converts js to ts
 
 ###
 npx tsconfig.json for config file
