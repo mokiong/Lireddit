@@ -27,7 +27,7 @@
 - Next.js
 
 ### Other tools used
-- Mackaroo -- dummy data generator
+- Mockaroo -- dummy data generator
 - ts-node  -- converts js to ts
 
 ###
