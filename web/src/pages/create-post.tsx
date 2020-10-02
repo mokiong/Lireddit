@@ -15,6 +15,7 @@ const CreatePost: React.FC<{}> = ({}) => {
    
    const [, createPost] = useCreatePostMutation();
 
+
    return (
          <Layout variant="small">
             <Formik 

@@ -25,11 +25,9 @@ export const cursorPagination = () : Resolver => {
 	return (_parent, fieldArgs, cache, info) => {
 		const { parentKey: entityKey, fieldName } = info;
 		const allFields = cache.inspectFields(entityKey);
-
-		console.log("all fields: ", allFields)
-
 		const fieldInfos = allFields.filter(info => info.fieldName === fieldName);
 		const size = fieldInfos.length;
+
 		if (size === 0) {
 			return undefined;
 		}
@@ -134,6 +132,14 @@ export const createUrqlClient = (ssrExchange: any) => ({
 			},
 			updates: {
 				Mutation: {
+					createPost: (_result, args, cache, info) => {
+						const allFields = cache.inspectFields("Query");
+						const fieldInfos = allFields.filter(info => info.fieldName === "posts");
+
+						fieldInfos.forEach((fi) => {
+							cache.invalidate("Query", 'posts', fi.arguments || {});
+						});
+					},
 					logout: (_result, args, cache, info) => {
 						betterUpdateQuery<LogoutMutation, MeQuery>(
 							cache,
