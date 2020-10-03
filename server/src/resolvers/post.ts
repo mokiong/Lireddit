@@ -71,12 +71,13 @@ export class PostResolver {
          }
          from post p
          inner join public.user u on u.id = p."creatorId"
-         ${cursor ? `where p."createdAt" < ${cursorIdx}` : ''}
+         ${cursor ? `where p."createdAt" < $${cursorIdx}` : ''}
          order by p."createdAt" DESC
          limit $1
       `, replacements
       );
 
+      
       // const qb = getConnection()
       // .getRepository(Post)
       // .createQueryBuilder("p")
@@ -107,7 +108,7 @@ export class PostResolver {
       @Arg('id', () => Int) id: number, 
       @Ctx() { }: MyContext): 
       Promise<Post | undefined> {
-      return await Post.findOne(id);
+      return await Post.findOne(id, { relations: ['creator'] });
    }
 
    //------------------MUTATIONS------------------//
