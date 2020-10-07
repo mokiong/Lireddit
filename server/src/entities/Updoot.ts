@@ -19,7 +19,9 @@ export class Updoot extends BaseEntity{
    @PrimaryColumn()
    postId: number;
 
-   @ManyToOne(() => Post, post => post.updoots)
-   post: Post;
+   @ManyToOne(() => Post, (post) => post.updoots, {
+      onDelete: "CASCADE",
+    })
+    post: Post;
 
 }
