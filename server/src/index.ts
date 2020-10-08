@@ -15,6 +15,8 @@ import { Post } from "./entities/Post";
 import { User } from "./entities/User";
 import path from "path";
 import { Updoot } from "./entities/Updoot";
+import { createUserLoader } from "./utilities/createUserLoader";
+import { createUpdootLoader } from "./utilities/createUpdootLoader";
 
 
 const main = async () => {
@@ -43,7 +45,13 @@ const main = async () => {
          validate: false
       }),
       // CONTEXT - a special object accesible by all reslovers
-      context: ({ req, res }) => ({ req, res, redis })
+      context: ({ req, res }) => ({ 
+         req, 
+         res, 
+         redis, 
+         userLoader: createUserLoader(),
+         updootLoader: createUpdootLoader()
+      })
       
    });
    

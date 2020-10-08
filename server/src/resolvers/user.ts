@@ -48,6 +48,7 @@ export class UserResolver {
       return "";
    };
 
+
    //------QUERIES-----//
 
    @Query(() => [User])
