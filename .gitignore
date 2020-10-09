@@ -3,3 +3,4 @@ dist
 dump.rdb
 .gitignore
 *.txt
+.env

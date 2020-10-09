@@ -29,6 +29,7 @@
 ### Other tools used
 - Mockaroo -- dummy data generator
 - ts-node  -- converts js to ts
+- dotenv-safe -- gen-env-types
 
 ###
 npx tsconfig.json for config file
