@@ -57,7 +57,7 @@ const main = async () => {
    // Middlewares
    // Gets cookies and sessions working on proxy environment
    // Tells express that there is one proxy
-   app.set('proxy', 1);
+   app.set('trust proxy', 1);
    app.use(cors({
       origin: process.env.CORS_ORIGIN,
       credentials: true

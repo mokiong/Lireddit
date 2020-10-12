@@ -4,3 +4,4 @@ dump.rdb
 .gitignore
 *.txt
 .env
+.sh
