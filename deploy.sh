@@ -1,3 +1,2 @@
-echo hello
-read var
-echo $var
+cd server
+npm run dev

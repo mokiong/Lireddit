@@ -1,16 +1,15 @@
 import { Box, Heading } from '@chakra-ui/core';
-import { withUrqlClient } from 'next-urql';
 import React from 'react';
 import { EditDeletePost } from '../../components/EditDeletePost';
 import { Layout } from '../../components/Layout';
-import { createUrqlClient } from '../../utilities/createUrqlClient';
 import { useGetPostFromUrl } from '../../utilities/useGetPostFromUrl';
+import { withApollo } from '../../utilities/withApollo';
 
 
 const Post = ({}) => {
-   const [{data, error, fetching}] = useGetPostFromUrl();
+   const {data, error, loading} = useGetPostFromUrl();
   
-   if(fetching){
+   if(loading){
       return (
          <Layout>
             <div>loading...</div>
@@ -19,7 +18,7 @@ const Post = ({}) => {
    }
 
    if(error){
-      return <div>{error}</div>
+      return <div>{error.message}</div>
    }
 
    if(!data?.post){
@@ -44,4 +43,4 @@ const Post = ({}) => {
    );
 }
 
-export default withUrqlClient(createUrqlClient, {ssr: true})(Post);
+export default withApollo({ssr: true})(Post);
